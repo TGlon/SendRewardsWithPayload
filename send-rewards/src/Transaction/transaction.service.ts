@@ -60,17 +60,16 @@ export class TransactionService {
           const response = await axios.get(apiUrl);
           console.log("Response:", response.data);
           const startTimestamp = await this.convertToUnixTimestamp(this.currentDate.toISOString());
-          console.log("startTime:", startTimestamp);
           
           const endOfDay = new Date(this.currentDate);
           endOfDay.setHours(23, 59, 59, 999);
           console.log("endTime:", endOfDay);
           
           const endTimestamp = await this.convertToUnixTimestamp(endOfDay.toISOString());
-
+          console.log("endTimestamp", endTimestamp);
+          
           const filteredTransactions = response.data.transactions.filter((transaction) => {
             const utime = transaction.utime;
-            console.log("utime:", utime);
             return utime >= startTimestamp && utime <= endTimestamp;
           });
           if (filteredTransactions.length === 0) {
