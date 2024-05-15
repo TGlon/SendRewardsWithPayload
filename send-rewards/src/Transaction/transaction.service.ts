@@ -20,14 +20,14 @@ export class TransactionService {
     const date = new Date(dateTime);
     return Math.floor(date.getTime() / 1000);
   }
-  
+
   private async delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   private currentDate: Date;
   async getAllTransactionItems(): Promise<any> {
-    
+
     try {
       // if (!this.currentDate) {
       //   const time = await this.settingModel.findOne();
@@ -39,7 +39,7 @@ export class TransactionService {
       if (!this.currentDate) {
         const time = await this.settingModel.findOne();
         if (!time || !time.StartTime) {
-          this.currentDate = new Date(); 
+          this.currentDate = new Date();
           this.currentDate.setHours(0, 0, 0, 0); // Set current date to today's date
         } else {
           this.currentDate = new Date(String(time.StartTime));
@@ -67,6 +67,11 @@ export class TransactionService {
             const utime = transaction.utime;
             return utime >= startTimestamp && utime <= endTimestamp;
           });
+          if (filteredTransactions.length === 0) {
+            console.log(`Account ${account.WalletAddress} has no transactions within the specified time range.`);
+          } else {
+            console.log(`Filtered transactions for account ${account.WalletAddress}`);
+          }
 
           for (const transaction of filteredTransactions) {
             const existingTransaction = await this.transactionModel.findOne({ hash: transaction.hash });
