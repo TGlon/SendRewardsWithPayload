@@ -7,6 +7,8 @@ export class Setting extends Document {
   StartTime: Date;
 
   @Prop()
+  settime: number;
+  @Prop()
   ss: string;
 
   @Prop()
